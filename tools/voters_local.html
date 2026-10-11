@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>मतदाता सूची — परिवार और GenZ (स्थानीय)</title>
+<link rel="icon" href="inc-logo.png">
+<style>
+:root{--saf:#f37022;--saf-dk:#c4520f;--saf-lt:#fde3d2;--saf-xlt:#fff6ef;
+  --grn:#0f823f;--grn-dk:#0a5c2c;--grn-lt:#dcefe3;--grn-xlt:#f3faf5;
+  --ink:#231f20;--ink-2:#5b5455;--line:#e2dcd6;--paper:#fffefc;--bg:#f3f1ec}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Sans Devanagari","Nirmala UI",Mangal,Arial,sans-serif}
+.page{max-width:1600px;margin:14px auto;background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(20,40,25,.08),0 6px 18px rgba(20,40,25,.07)}
+.tri{display:flex;height:6px}.tri i{flex:1}.tri i:nth-child(1){background:var(--saf)}.tri i:nth-child(2){background:#fff}.tri i:nth-child(3){background:var(--grn)}
+.mast{display:flex;align-items:center;gap:14px;padding:10px 20px;background:linear-gradient(180deg,#fff,var(--grn-xlt));border-bottom:2px solid var(--grn)}
+.mast img{height:52px;width:52px}
+.mast h1{margin:0;font-size:19px;color:var(--grn-dk)}
+.mast .sub{margin:2px 0 0;font-size:12px;color:var(--ink-2)}
+.mast .sp{flex:1}
+.local{font-size:11.5px;color:#a22;border:1px solid #d99;border-radius:99px;padding:3px 10px;background:#fff;white-space:nowrap}
+.controls{padding:10px 20px;background:#fff;border-bottom:1px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.row+.row{margin-top:9px;padding-top:9px;border-top:1px dashed var(--line)}
+.fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fld>label{font-size:11.5px;color:var(--grn-dk);font-weight:700}
+select,input,button{font:inherit;color:var(--ink)}
+select,input[type=search],input[type=number]{padding:6px 8px;border:1px solid #cdc6bf;border-radius:5px;background:#fff;max-width:100%}
+select:focus,input:focus{outline:2px solid var(--saf);outline-offset:1px}
+#ac{min-width:200px}#booth{min-width:330px}#q{min-width:220px}
+input[type=number]{width:70px}
+.seg{display:inline-flex;border:1px solid var(--grn);border-radius:5px;overflow:hidden;background:#fff}
+.seg button{padding:6px 12px;border:0;background:#fff;color:var(--grn-dk);cursor:pointer;border-right:1px solid var(--grn-lt);white-space:nowrap}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--grn);color:#fff;font-weight:600}
+.seg.mini button{padding:3px 10px;font-size:12px}
+button.ghost{padding:6px 12px;border:1px solid var(--grn);border-radius:5px;background:#fff;color:var(--grn-dk);cursor:pointer}
+button.ghost:hover{background:var(--grn-xlt)}
+button.saf{border-color:var(--saf);color:var(--saf-dk)}
+button.saf[aria-pressed=true]{background:var(--saf);color:#fff}
+label.chk{display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;padding-bottom:6px}
+.tiles{display:flex;flex-wrap:wrap;background:var(--grn-xlt);border-bottom:1px solid var(--line)}
+.tile{flex:1 1 120px;padding:7px 16px;border-right:1px solid var(--line)}
+.tile:last-child{border-right:0}
+.tile .k{font-size:11px;color:var(--ink-2)}
+.tile .v{font-size:17px;font-weight:700;color:var(--grn-dk);white-space:nowrap}
+.tile .v.saf{color:var(--saf-dk)}
+.chipbar{padding:6px 20px;background:var(--saf-xlt);border-bottom:1px solid var(--line);font-size:13px}
+.chipbar[hidden]{display:none}
+.wrap{overflow:auto;height:calc(100vh - 20px);height:calc(100dvh - 20px);min-height:420px}
+table{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:5px 9px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}
+th{position:sticky;top:0;z-index:2;background:var(--grn-dk);color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+th:hover{background:var(--grn)}
+th .ar{color:#ffd9a8;font-size:10px}
+td.n,th.n{text-align:right}
+tbody tr:nth-child(even) td{background:#faf8f4}
+tbody tr:hover td{background:var(--saf-xlt)}
+tr.del td{color:#9a8f8f;text-decoration:line-through}
+tr.open{cursor:pointer}
+td.sl{color:var(--ink-2)}
+td.nm{font-weight:600}
+.fam{display:inline-block;padding:0 7px;border-radius:99px;background:var(--grn-lt);color:var(--grn-dk);font-size:11.5px;cursor:pointer;font-weight:600}
+.fam:hover{background:var(--grn);color:#fff}
+.tag{display:inline-block;font-size:10.5px;padding:0 6px;border-radius:99px;border:1px solid var(--saf);color:var(--saf-dk);background:#fff}
+.tag.del{border-color:#b33;color:#a22}
+.genz{display:inline-block;font-size:10px;padding:0 5px;border-radius:4px;background:var(--saf);color:#fff;margin-left:4px;vertical-align:1px}
+.links{font-size:12px;color:var(--ink-2);white-space:normal;min-width:160px}
+tr.fhead td{background:var(--grn-xlt)!important;font-weight:700;color:var(--grn-dk);border-top:2px solid var(--grn-lt)}
+tr.tot td{position:sticky;bottom:0;background:var(--grn-lt)!important;font-weight:700;border-top:2px solid var(--grn)}
+.empty{padding:30px;text-align:center;color:var(--ink-2)}
+.splash{padding:60px 20px;text-align:center;color:var(--grn-dk)}
+.splash img{height:200px}
+footer{padding:8px 20px;font-size:12px;color:var(--ink-2);border-top:1px solid var(--line);background:#fff}
+@media (max-width:860px){
+  .page{margin:6px}
+  .mast{flex-wrap:wrap;padding:10px 12px}.mast img{height:40px;width:40px}.mast h1{font-size:16px}
+  .controls{padding:10px 12px}
+  .row{display:grid;grid-template-columns:1fr 1fr}
+  .row>.fld{grid-column:1/-1}.row>.fld.half{grid-column:auto}
+  #ac,#booth,#q{min-width:0;width:100%}
+  select,input{font-size:16px}
+  .seg{width:100%}.seg button{flex:1;padding:8px 4px}
+  .tiles{flex-wrap:nowrap;overflow-x:auto}.tile{flex:0 0 auto;min-width:max-content;padding:6px 12px}
+  th,td{padding:5px 7px;font-size:12.5px}
+  .links{min-width:120px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="tri"><i></i><i></i><i></i></div>
+  <header class="mast">
+    <img src="inc-logo.png" alt="">
+    <div><h1 id="title"></h1><p class="sub" id="sub"></p></div>
+    <div class="sp"></div>
+    <span class="local" id="local"></span>
+    <div class="seg mini" id="lang"><button data-v="hi" aria-pressed="true">हिंदी</button><button data-v="en" aria-pressed="false">English</button></div>
+  </header>
+  <section class="controls">
+    <div class="row">
+      <div class="fld"><label for="ac" id="l-ac"></label><select id="ac"></select></div>
+      <div class="fld"><label for="booth" id="l-booth"></label><select id="booth"></select></div>
+      <div class="fld"><label id="l-view"></label>
+        <div class="seg" id="view"><button data-v="list"></button><button data-v="fam"></button><button data-v="genz"></button></div></div>
+    </div>
+    <div class="row">
+      <div class="fld"><label for="q" id="l-q"></label><input id="q" type="search" autocomplete="off"></div>
+      <div class="fld half"><label id="l-sex"></label>
+        <div class="seg" id="sex"><button data-v="" aria-pressed="true"></button><button data-v="M"></button><button data-v="F"></button></div></div>
+      <div class="fld agefld"><label id="l-age"></label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input id="amin" type="number" min="18" max="110"> – <input id="amax" type="number" min="18" max="110">
+          <button class="ghost saf" id="genzBtn"></button></div></div>
+      <label class="chk"><input type="checkbox" id="famOnly"> <span id="l-famOnly"></span></label>
+      <label class="chk"><input type="checkbox" id="showDel"> <span id="l-showDel"></span></label>
+      <div class="fld"><label>&nbsp;</label><button class="ghost" id="csv"></button></div>
+    </div>
+  </section>
+  <section class="tiles" id="tiles"></section>
+  <div class="chipbar" id="chipbar" hidden></div>
+  <section class="wrap" id="wrap"><div class="splash" id="splash"><img src="inc-logo.png" alt=""><p id="splashText"></p></div>
+    <table id="tbl" hidden><thead></thead><tbody></tbody></table><div class="empty" id="empty" hidden></div></section>
+  <footer id="foot"></footer>
+</div>
+<script>
+"use strict";
+const T = {
+  hi:{title:'मतदाता सूची — परिवार और GenZ', sub:'मतदाता सूची 2026 · बूथवार पूरी सूची, अनुमानित परिवार और आयु-वर्ग चयन',
+    local:'केवल इस कंप्यूटर के लिए — इंटरनेट पर न डालें', ac:'विधानसभा क्षेत्र', booth:'बूथ', allBooths:'सभी बूथ — सारांश',
+    view:'दृश्य', vList:'पूरी सूची', vFam:'परिवार', vGenz:'GenZ / आयु वर्ग',
+    q:'खोजें', qPh:'नाम, EPIC, पिता/पति, मकान', sex:'लिंग', all:'सभी', m:'पुरुष', f:'महिला',
+    age:'आयु सीमा', genz:'GenZ (18–29)', famOnly:'केवल परिवार वाले', showDel:'हटाए गए भी दिखाएँ', csv:'CSV डाउनलोड',
+    pick:'— चुनें —', splash:'विधानसभा क्षेत्र और बूथ चुनें', loading:'लोड हो रहा है…', fail:'डेटा फ़ाइल नहीं मिली। पहले build_voters_local.py चलाएँ।',
+    cSl:'क्रम', cEpic:'EPIC', cName:'नाम', cRel:'संबंध', cHouse:'मकान', cAge:'आयु', cSex:'लिंग', cSec:'अनुभाग', cFam:'परिवार',
+    cLinks:'परिवार में संबंध', cStatus:'स्थिति', cPart:'बूथ', cBname:'बूथ का नाम', cVill:'गाँव', cGp:'पंचायत',
+    cVoters:'मतदाता', cFams:'परिवार', cInFam:'परिवार में %', cSel:'चयनित', cSelPct:'चयनित %', cSelM:'पुरुष', cSelF:'महिला', cSelFam:'चयनित, परिवार में',
+    rel:{F:'पिता', H:'पति', M:'माता', O:'अन्य'}, sx:{M:'पु', F:'म', T:'तृ'},
+    link:{wife:'पत्नी', husband:'पति', child:'संतान', father:'पिता', mother:'माता', sibling:'भाई/बहन'}, of:'क्र.',
+    kVoters:'मतदाता', kDel:'हटाए गए', kFams:'परिवार', kInFam:'परिवार में', kSel:'चयनित', kShown:'दिखाए गए', kGenz:'GenZ',
+    famN:n=>'परिवार '+n, members:n=>n+' सदस्य', house:'मकान', onlyFam:n=>`केवल परिवार ${n} दिखाया जा रहा है`, clear:'हटाएँ',
+    total:'कुल', empty:'इस फ़िल्टर से कुछ नहीं मिला।', mod:'संशोधित', added:'परिवर्धन',
+    foot:'परिवार नाम, पिता/पति के नाम, मकान संख्या और क्रम संख्या से लगाए गए अनुमान हैं, आधिकारिक नहीं। GenZ = 2026 में 18–29 वर्ष (आयु सीमा बदली जा सकती है)। हटाए गए मतदाता गिनती में शामिल नहीं।'},
+  en:{title:'Voter list — families & GenZ', sub:'Electoral roll 2026 · full booth lists, inferred families and age-band selection',
+    local:'For this computer only — do not put online', ac:'Assembly constituency', booth:'Booth', allBooths:'All booths — summary',
+    view:'View', vList:'Full list', vFam:'Families', vGenz:'GenZ / age band',
+    q:'Search', qPh:'name, EPIC, father/husband, house', sex:'Sex', all:'All', m:'Male', f:'Female',
+    age:'Age range', genz:'GenZ (18–29)', famOnly:'In a family only', showDel:'Show deleted', csv:'Download CSV',
+    pick:'— select —', splash:'Choose an assembly constituency and a booth', loading:'Loading…', fail:'Data file not found. Run build_voters_local.py first.',
+    cSl:'Sl', cEpic:'EPIC', cName:'Name', cRel:'Relation', cHouse:'House', cAge:'Age', cSex:'Sex', cSec:'Section', cFam:'Family',
+    cLinks:'Relation in family', cStatus:'Status', cPart:'Booth', cBname:'Booth name', cVill:'Village', cGp:'Panchayat',
+    cVoters:'Voters', cFams:'Families', cInFam:'In families %', cSel:'Selected', cSelPct:'Selected %', cSelM:'Male', cSelF:'Female', cSelFam:'Selected, in family',
+    rel:{F:'Father', H:'Husband', M:'Mother', O:'Other'}, sx:{M:'M', F:'F', T:'T'},
+    link:{wife:'wife', husband:'husband', child:'child', father:'father', mother:'mother', sibling:'sibling'}, of:'of Sl',
+    kVoters:'Voters', kDel:'Deleted', kFams:'Families', kInFam:'In families', kSel:'Selected', kShown:'Shown', kGenz:'GenZ',
+    famN:n=>'Family '+n, members:n=>n+' members', house:'House', onlyFam:n=>`Showing family ${n} only`, clear:'clear',
+    total:'Total', empty:'Nothing matches that filter.', mod:'modified', added:'addition',
+    foot:'Families are inferred from names, father/husband names, house and serial numbers — estimates, not official. GenZ = aged 18–29 in 2026 (the range can be changed). Deleted voters are not counted.'},
+};
+const GENZ = [18, 29];
+let LANG = 'hi';
+try{ const v = localStorage.getItem('vl-lang'); if(v==='hi'||v==='en') LANG = v; }catch(e){}
+const t = () => T[LANG];
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => n==null ? '' : Math.round(n).toLocaleString('en-IN');
+const pct = (a, b) => b ? (Math.round(a*1000/b)/10).toFixed(1) : '';
+const S = {ac:null, part:0, view:'list', q:'', sex:'', amin:GENZ[0], amax:GENZ[1], famOnly:false, showDel:false,
+           fam:0, sort:{k:'sl', d:1}};
+let ACS = [], AC = null, ROWS = null;
+const DATA = {ac:{}, booth:{}};
+
+/* ---------------------------------------------------------- loading */
+window.__acs = d => { ACS = d; };
+window.__ac = (no, d) => { DATA.ac[no] = d; };
+window.__booth = (no, part, rows) => { DATA.booth[no+'/'+part] = rows; };
+function load(src, ready){
+  return new Promise((ok, bad) => {
+    if(ready()) return ok();
+    const s = document.createElement('script'); s.src = src;
+    s.onload = () => ready() ? ok() : bad(); s.onerror = bad;
+    document.head.appendChild(s);
+  });
+}
+const pad = n => String(n).padStart(3, '0');
+
+/* ---------------------------------------------------------- rows */
+// voter row: 0 sl,1 epic,2 name,3 rel,4 rname,5 house,6 age,7 sex,8 section,9 list,10 mark,11 fam,12 links
+const DELETED = new Set(['E-Dead','S-Shifted','R-Repeated','M-Missing','Q-Ineligible']);
+const isDel = r => DELETED.has(r[10]);
+const inAge = a => a!=null && a>=S.amin && a<=S.amax;
+function filtered(){
+  const q = S.q.trim().toLowerCase();
+  return ROWS.filter(r => {
+    if(isDel(r) && !S.showDel) return false;
+    if(S.fam && r[11]!==S.fam) return false;
+    if(S.sex && r[7]!==S.sex) return false;
+    if(S.famOnly && !r[11]) return false;
+    if(S.view==='genz' && !inAge(r[6])) return false;
+    if(q && !(String(r[0])===q || (r[1]+' '+r[2]+' '+r[4]+' '+r[5]).toLowerCase().includes(q))) return false;
+    return true;
+  });
+}
+const SORT = {sl:r=>r[0], epic:r=>r[1], name:r=>r[2], rel:r=>r[4], house:r=>r[5], age:r=>r[6], sex:r=>r[7],
+              sec:r=>r[8], fam:r=>r[11]||1e9};
+function sortRows(rows){
+  const f = SORT[S.sort.k] || SORT.sl, d = S.sort.d;
+  return rows.sort((a, b) => { const x = f(a), y = f(b);
+    if(x==null) return 1; if(y==null) return -1;
+    return (typeof x==='string' ? x.localeCompare(y, 'hi', {numeric:true}) : x-y)*d || a[0]-b[0]; });
+}
+
+/* ---------------------------------------------------------- render */
+function th(k, label, cls){
+  const ar = S.sort.k===k ? `<span class="ar">${S.sort.d>0?' ▲':' ▼'}</span>` : '';
+  return `<th class="${cls||''}" data-k="${k}">${esc(label)}${ar}</th>`;
+}
+function linksText(ln){
+  return ln.map(([r, s]) => `${t().link[r]||r} ${t().of} ${s}`).join(', ');
+}
+function voterCells(r){
+  const L = t(), gz = r[6]!=null && r[6]>=GENZ[0] && r[6]<=GENZ[1] ? `<span class="genz">GenZ</span>` : '';
+  const st = isDel(r) ? `<span class="tag del">${esc(r[10])}</span>`
+           : r[10] ? `<span class="tag">${esc(L.mod)}</span>` : '';
+  return `<td class="n sl">${r[0]}</td><td>${esc(r[1])}</td><td class="nm">${esc(r[2])}</td>`
+    + `<td>${esc(L.rel[r[3]]||r[3])}: ${esc(r[4])}</td><td>${esc(r[5])}</td><td class="n">${r[6]??''}${gz}</td>`
+    + `<td>${esc(L.sx[r[7]]||r[7])}</td><td>${esc(r[8])}${r[9] ? ` <span class="tag">${esc(L.added)} ${esc(r[9].slice(1))}</span>` : ''}</td>`
+    + `<td>${r[11] ? `<span class="fam" data-fam="${r[11]}">F${r[11]}</span>` : ''}</td>`
+    + `<td class="links">${esc(linksText(r[12]))}</td><td>${st}</td>`;
+}
+function voterHead(){
+  const L = t();
+  return '<tr>' + th('sl', L.cSl, 'n') + th('epic', L.cEpic) + th('name', L.cName) + th('rel', L.cRel)
+    + th('house', L.cHouse) + th('age', L.cAge, 'n') + th('sex', L.cSex) + th('sec', L.cSec)
+    + th('fam', L.cFam) + `<th>${esc(L.cLinks)}</th><th>${esc(L.cStatus)}</th></tr>`;
+}
+let LAST = [];          // what the table shows, for CSV
+function render(){
+  const L = t(), tbl = $('#tbl'), thead = tbl.tHead, tbody = tbl.tBodies[0];
+  $('.agefld').style.display = (S.view==='genz' || !S.part) ? '' : 'none';
+  $('#famOnly').parentNode.style.display = S.part && S.view!=='fam' ? '' : 'none';
+  $('#showDel').parentNode.style.display = S.part ? '' : 'none';
+  $('#genzBtn').setAttribute('aria-pressed', String(S.amin===GENZ[0] && S.amax===GENZ[1]));
+  $('#chipbar').hidden = !S.fam;
+  if(S.fam) $('#chipbar').innerHTML = `${esc(L.onlyFam(S.fam))} · <button class="ghost" id="clearFam">${esc(L.clear)}</button>`;
+  if(!AC){ tbl.hidden = true; $('#splash').hidden = false; $('#tiles').innerHTML = ''; $('#empty').hidden = true; return; }
+  $('#splash').hidden = true; tbl.hidden = false;
+  if(!S.part) return renderSummary();
+  if(!ROWS){ tbody.innerHTML = ''; return; }
+  const b = AC.booths.find(x => x[0]===S.part);
+  const rows = sortRows(filtered());
+  LAST = rows;
+  let h = '';
+  if(S.view==='fam'){
+    thead.innerHTML = voterHead();
+    const by = new Map();
+    for(const r of rows) if(r[11]) (by.get(r[11]) || by.set(r[11], []).get(r[11])).push(r);
+    const order = [...by.keys()].sort((a, c) => a-c);
+    LAST = [];
+    for(const no of order){
+      const mem = ROWS.filter(r => r[11]===no && (S.showDel || !isDel(r)));
+      const shown = by.get(no);
+      const houses = [...new Set(mem.map(r => r[5]).filter(x => x && !/^0+$/.test(x)))].join(', ');
+      h += `<tr class="fhead"><td colspan="11">${esc(L.famN(no))} · ${esc(L.members(mem.length))}`
+         + (houses ? ` · ${esc(L.house)} ${esc(houses)}` : '') + '</td></tr>';
+      for(const r of (shown.length===mem.length || S.q ? shown : mem).sort((a, c) => (c[6]||0)-(a[6]||0)))
+        { h += `<tr class="${isDel(r)?'del':''}">${voterCells(r)}</tr>`; LAST.push(r); }
+    }
+  } else {
+    thead.innerHTML = voterHead();
+    h = rows.map(r => `<tr class="${isDel(r)?'del':''}">${voterCells(r)}</tr>`).join('');
+  }
+  tbody.innerHTML = h;
+  $('#empty').hidden = !!h; $('#empty').textContent = L.empty;
+  // tiles
+  const live = ROWS.filter(r => !isDel(r));
+  const sel = live.filter(r => inAge(r[6]) && (!S.sex || r[7]===S.sex));
+  const tiles = [[L.kVoters, fmt(b[4])], [L.kDel, fmt(b[5])], [L.kFams, fmt(b[6])],
+                 [L.kInFam, `${fmt(b[7])} · ${pct(b[7], b[4])}%`],
+                 [`${L.kSel} (${S.amin}–${S.amax})`, `${fmt(sel.length)} · ${pct(sel.length, live.length)}%`, 'saf'],
+                 [L.kShown, fmt(S.view==='fam' ? LAST.length : rows.length)]];
+  $('#tiles').innerHTML = tiles.map(([k, v, c]) => `<div class="tile"><div class="k">${esc(k)}</div><div class="v ${c||''}">${esc(v)}</div></div>`).join('');
+}
+
+/* all booths: counts for the chosen age band, from each booth's age histogram */
+function bandCount(b){
+  const lo = Math.max(S.amin, AC.ageMin) - AC.ageMin, hi = S.amax - AC.ageMin;
+  let m = 0, f = 0, tt = 0, fam = 0;
+  for(let i = lo; i <= hi && i < b[8].length; i++){ m += b[8][i]; f += b[9][i]; tt += b[10][i]; fam += b[11][i]; }
+  return {m, f, all: (S.sex==='M' ? m : S.sex==='F' ? f : m+f+tt), fam};
+}
+const SSORT = {part:b=>b[0], bname:b=>b[1], vill:b=>b[2], gp:b=>b[3], voters:b=>b[4], fams:b=>b[6],
+               infam:b=>b[4] ? b[7]/b[4] : 0, sel:b=>bandCount(b).all, selpct:b=>b[4] ? bandCount(b).all/b[4] : 0,
+               selm:b=>bandCount(b).m, self:b=>bandCount(b).f, selfam:b=>bandCount(b).fam};
+function renderSummary(){
+  const L = t(), thead = $('#tbl').tHead, tbody = $('#tbl').tBodies[0];
+  const q = S.q.trim().toLowerCase();
+  let list = AC.booths.filter(b => !q || String(b[0])===q || (b[1]+' '+b[2]+' '+b[3]).toLowerCase().includes(q));
+  const f = SSORT[S.sort.k] || SSORT.part, d = S.sort.d;
+  list.sort((a, b) => { const x = f(a), y = f(b);
+    return (typeof x==='string' ? x.localeCompare(y, 'hi') : x-y)*d || a[0]-b[0]; });
+  const band = `${S.amin}–${S.amax}`;
+  thead.innerHTML = '<tr>' + th('part', L.cPart, 'n') + th('bname', L.cBname) + th('vill', L.cVill) + th('gp', L.cGp)
+    + th('voters', L.cVoters, 'n') + th('fams', L.cFams, 'n') + th('infam', L.cInFam, 'n')
+    + th('sel', `${L.cSel} ${band}`, 'n') + th('selpct', L.cSelPct, 'n') + th('selm', L.cSelM, 'n')
+    + th('self', L.cSelF, 'n') + th('selfam', L.cSelFam, 'n') + '</tr>';
+  let tv = 0, tf = 0, ti = 0, ts = 0, tm = 0, tw = 0, tsf = 0;
+  LAST = [];
+  tbody.innerHTML = list.map(b => {
+    const c = bandCount(b);
+    tv += b[4]; tf += b[6]; ti += b[7]; ts += c.all; tm += c.m; tw += c.f; tsf += c.fam;
+    LAST.push([b[0], b[1], b[2], b[3], b[4], b[6], pct(b[7], b[4]), c.all, pct(c.all, b[4]), c.m, c.f, c.fam]);
+    return `<tr class="open" data-part="${b[0]}"><td class="n">${b[0]}</td><td>${esc(b[1])}</td><td>${esc(b[2])}</td>`
+      + `<td>${esc(b[3])}</td><td class="n">${fmt(b[4])}</td><td class="n">${fmt(b[6])}</td><td class="n">${pct(b[7], b[4])}</td>`
+      + `<td class="n"><b>${fmt(c.all)}</b></td><td class="n">${pct(c.all, b[4])}</td><td class="n">${fmt(c.m)}</td>`
+      + `<td class="n">${fmt(c.f)}</td><td class="n">${fmt(c.fam)}</td></tr>`;
+  }).join('') + `<tr class="tot"><td></td><td>${esc(L.total)} — ${list.length} ${esc(L.cPart)}</td><td></td><td></td>`
+    + `<td class="n">${fmt(tv)}</td><td class="n">${fmt(tf)}</td><td class="n">${pct(ti, tv)}</td><td class="n">${fmt(ts)}</td>`
+    + `<td class="n">${pct(ts, tv)}</td><td class="n">${fmt(tm)}</td><td class="n">${fmt(tw)}</td><td class="n">${fmt(tsf)}</td></tr>`;
+  $('#empty').hidden = list.length > 0; $('#empty').textContent = L.empty;
+  $('#tiles').innerHTML = [[L.kVoters, fmt(tv)], [L.kFams, fmt(tf)], [L.kInFam, pct(ti, tv)+'%'],
+    [`${L.kSel} (${band})`, `${fmt(ts)} · ${pct(ts, tv)}%`, 'saf'], [L.cSelM+' / '+L.cSelF, `${fmt(tm)} / ${fmt(tw)}`]]
+    .map(([k, v, c]) => `<div class="tile"><div class="k">${esc(k)}</div><div class="v ${c||''}">${esc(v)}</div></div>`).join('');
+}
+
+/* ---------------------------------------------------------- chrome */
+function chrome(){
+  const L = t();
+  document.documentElement.lang = LANG; document.title = L.title;
+  const set = (s, v) => { $(s).textContent = v; };
+  set('#title', L.title); set('#sub', L.sub); set('#local', L.local); set('#l-ac', L.ac); set('#l-booth', L.booth);
+  set('#l-view', L.view); set('#l-q', L.q); set('#l-sex', L.sex); set('#l-age', L.age); set('#genzBtn', L.genz);
+  set('#l-famOnly', L.famOnly); set('#l-showDel', L.showDel); set('#csv', L.csv); set('#foot', L.foot);
+  set('#splashText', L.splash); $('#q').placeholder = L.qPh;
+  [...$('#view').children].forEach((b, i) => { b.textContent = [L.vList, L.vFam, L.vGenz][i]; b.setAttribute('aria-pressed', String(b.dataset.v===S.view)); });
+  [...$('#sex').children].forEach((b, i) => { b.textContent = [L.all, L.m, L.f][i]; b.setAttribute('aria-pressed', String(b.dataset.v===S.sex)); });
+  for(const b of $('#lang').children) b.setAttribute('aria-pressed', String(b.dataset.v===LANG));
+  $('#amin').value = S.amin; $('#amax').value = S.amax;
+  $('#ac').innerHTML = `<option value="">${esc(L.pick)}</option>` + ACS.map(a =>
+    `<option value="${a[0]}">${a[0]} — ${esc(LANG==='hi' && a[2] ? a[2] : a[1])} (${fmt(a[3])} ${esc(L.cPart)})</option>`).join('');
+  $('#ac').value = S.ac || '';
+  $('#booth').disabled = !AC;
+  $('#booth').innerHTML = !AC ? `<option value="0">${esc(L.pick)}</option>` : `<option value="0">${esc(L.allBooths)}</option>`
+    + AC.booths.map(b => `<option value="${b[0]}">${b[0]} — ${esc(b[1])}${b[2] ? ' · '+esc(b[2]) : ''}</option>`).join('');
+  $('#booth').value = String(S.part);
+}
+function saveHash(){
+  const h = S.ac ? `#${S.ac}/${S.part}/${S.view}` : '';
+  if(location.hash !== h) history.replaceState(null, '', h || location.pathname);
+}
+
+async function openAC(no){
+  S.ac = no; AC = null; ROWS = null; S.part = 0; S.fam = 0;
+  if(!no){ chrome(); render(); saveHash(); return; }
+  $('#splashText').textContent = t().loading;
+  try{ await load(`data/${no}/booths.js`, () => DATA.ac[no]); AC = DATA.ac[no]; }
+  catch(e){ $('#splashText').textContent = t().fail; return; }
+  S.sort = {k:'part', d:1};
+  chrome(); render(); saveHash();
+}
+async function openBooth(part){
+  S.part = part; S.fam = 0; ROWS = null; S.sort = part ? {k:'sl', d:1} : {k:'part', d:1};
+  chrome();
+  if(part){
+    try{ await load(`data/${S.ac}/p${pad(part)}.js`, () => DATA.booth[S.ac+'/'+part]); ROWS = DATA.booth[S.ac+'/'+part]; }
+    catch(e){ $('#empty').hidden = false; $('#empty').textContent = t().fail; return; }
+  }
+  render(); saveHash();
+  $('#wrap').scrollTop = 0;
+}
+
+/* ---------------------------------------------------------- events */
+$('#lang').onclick = e => { const b = e.target.closest('button'); if(!b) return; LANG = b.dataset.v;
+  try{ localStorage.setItem('vl-lang', LANG); }catch(err){} chrome(); render(); };
+$('#ac').onchange = e => openAC(+e.target.value || null);
+$('#booth').onchange = e => openBooth(+e.target.value || 0);
+$('#view').onclick = e => { const b = e.target.closest('button'); if(!b) return; S.view = b.dataset.v;
+  if(S.view==='genz' && S.part) S.sort = {k:'age', d:1};
+  chrome(); render(); saveHash(); };
+$('#sex').onclick = e => { const b = e.target.closest('button'); if(!b) return; S.sex = b.dataset.v; chrome(); render(); };
+$('#q').oninput = e => { S.q = e.target.value; render(); };
+const age = () => { const a = +$('#amin').value, b = +$('#amax').value;
+  S.amin = a || 18; S.amax = b || 110; if(S.amin > S.amax) [S.amin, S.amax] = [S.amax, S.amin]; render(); };
+$('#amin').oninput = age; $('#amax').oninput = age;
+$('#genzBtn').onclick = () => { S.amin = GENZ[0]; S.amax = GENZ[1]; $('#amin').value = S.amin; $('#amax').value = S.amax;
+  if(S.part && S.view!=='genz'){ S.view = 'genz'; chrome(); } render(); };
+$('#famOnly').onchange = e => { S.famOnly = e.target.checked; render(); };
+$('#showDel').onchange = e => { S.showDel = e.target.checked; render(); };
+$('#chipbar').onclick = e => { if(e.target.id==='clearFam'){ S.fam = 0; render(); } };
+$('#tbl').onclick = e => {
+  const h = e.target.closest('th[data-k]');
+  if(h){ const k = h.dataset.k; S.sort = S.sort.k===k ? {k, d:-S.sort.d} : {k, d:1}; render(); return; }
+  const fam = e.target.closest('.fam');
+  if(fam){ S.fam = +fam.dataset.fam; if(S.view==='genz'){ S.view = 'list'; chrome(); } render(); return; }
+  const tr = e.target.closest('tr.open');
+  if(tr) openBooth(+tr.dataset.part);
+};
+$('#csv').onclick = () => {
+  if(!AC) return;
+  const L = t();
+  let head, body;
+  if(!S.part){
+    head = [L.cPart, L.cBname, L.cVill, L.cGp, L.cVoters, L.cFams, L.cInFam, `${L.cSel} ${S.amin}-${S.amax}`, L.cSelPct, L.cSelM, L.cSelF, L.cSelFam];
+    body = LAST;
+  } else {
+    head = [L.cSl, L.cEpic, L.cName, L.cRel, L.cHouse, L.cAge, L.cSex, L.cSec, L.cFam, L.cLinks, L.cStatus];
+    body = LAST.map(r => [r[0], r[1], r[2], `${L.rel[r[3]]||r[3]}: ${r[4]}`, r[5], r[6], L.sx[r[7]]||r[7], r[8],
+                          r[11] ? 'F'+r[11] : '', linksText(r[12]), r[10]]);
+  }
+  const csv = '﻿' + [head, ...body].map(r => r.map(v => `"${String(v??'').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = `AC${S.ac}_${S.part ? 'Booth'+S.part+'_'+S.view : 'booths'}${S.view==='genz'||!S.part ? `_age${S.amin}-${S.amax}` : ''}.csv`;
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+/* ---------------------------------------------------------- boot */
+(async function(){
+  try{ await load('data/acs.js', () => ACS.length); }catch(e){ $('#splashText').textContent = t().fail; }
+  chrome(); render();
+  const m = location.hash.match(/^#(\d+)(?:\/(\d+))?(?:\/(\w+))?/);
+  const first = m ? +m[1] : (ACS.length===1 ? ACS[0][0] : null);
+  if(first){ if(m && m[3]) S.view = m[3]; await openAC(first); if(m && +m[2]) await openBooth(+m[2]); }
+})();
+</script>
+</body>
+</html>
